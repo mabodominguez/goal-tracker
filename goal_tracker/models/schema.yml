@@ -1,0 +1,55 @@
+version: 0
+
+sources:
+  - name: mydb
+    # database: mydb
+    schema: goal_tracker
+    tables:
+      - name: goals_raw
+        loaded_at_field: _batched_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+      - name: goals
+        loaded_at_field: _batched_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+      - name: rewards
+        loaded_at_field: _batched_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+models:
+  - name: clean_goals_raw_model
+    description: "transform goals_raw from notion format to postgres format"
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: goal_name
+        description: ""
+        data_tests:
+          - not_null
+      - name: category
+        description: ""
+      - name: due_date
+        description: ""
+      - name: lift
+        description: ""
+      - name: done
+        description: ""
+      - name: parent_id
+        description: ""
+      - name: subgoal_ids
+        description: ""       
+  # - name: my_second_dbt_model
+  #   description: "A starter dbt model"
+  #   columns:
+  #     - name: id
+  #       description: "The primary key for this table"
+  #       data_tests:
+  #         - unique
+  #         - not_null
