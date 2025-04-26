@@ -20,6 +20,11 @@ sources:
         freshness:
           warn_after: {count: 12, period: hour}
           error_after: {count: 24, period: hour}
+      - name: rewards_purchased
+        loaded_at_field: _batched_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
 models:
   - name: clean_goals_raw_model
     description: "transform goals_raw from notion format to postgres format"
@@ -44,12 +49,16 @@ models:
       - name: parent_id
         description: ""
       - name: subgoal_ids
-        description: ""       
-  # - name: my_second_dbt_model
-  #   description: "A starter dbt model"
-  #   columns:
-  #     - name: id
-  #       description: "The primary key for this table"
-  #       data_tests:
-  #         - unique
-  #         - not_null
+        description: ""    
+  - name: points_earned_model
+    description: "keep track of how many points are earned by completing goals"
+    columns:
+      - name: category
+        description: "the category of this goal"
+      - name: due_date
+        description: "due date by when in theory all points are earned"
+      - name: total_points_available
+        description: "total points that could be earned in a particular cateogry and timeframe"
+      - name: points_earned
+        description: "actual total points earned"
+

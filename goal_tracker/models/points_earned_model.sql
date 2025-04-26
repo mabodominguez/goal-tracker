@@ -3,19 +3,19 @@
 WITH 
     goals as ( SELECT * FROM 
         {{ ref('clean_goals_raw_model') }}
+        CROSS JOIN UNNEST(ARRAY['TOTAL', category]) as new_category
         )
 
 SELECT 
-    new_category,
+    new_category category,
     due_date,
-    SUM(CAST(lift as INTEGER)) as total_points_available,
+    SUM(lift) as total_points_available,
     SUM( CASE
-            WHEN CAST(done AS BOOLEAN) THEN CAST(lift as INTEGER)
+            WHEN done THEN lift
             ELSE 0
          END
     ) as points_earned
-
 FROM goals
-CROSS JOIN UNNEST(ARRAY['TOTAL', category]) as new_category
+
 GROUP BY new_category, due_date
-ORDER BY new_category, due_date
+ORDER BY category, due_date

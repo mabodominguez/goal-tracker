@@ -10,8 +10,8 @@ SELECT
     goal_name,
     category,
     due_date,
-    lift,
-    done,
-    0 as parent_id,
-    NULL as subgoal_ids
+    CAST(lift as INTEGER),
+    CAST(done as BOOLEAN),
+    parent_item,
+    sub_item as sub_items
 FROM raw_data
